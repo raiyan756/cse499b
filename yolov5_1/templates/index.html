@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MCQ Script Checker</title>
+  </head>
+  <body>
+    <h2>Upload MCQ Script (PDF)</h2>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <input type="file" name="file" accept=".pdf" required />
+      <br /><br />
+      <button type="submit">Upload & Process</button>
+    </form>
+
+    <h3>Detection Result:</h3>
+    <pre
+      id="result"
+      style="background: #f0f0f0; padding: 10px; border: 1px solid #ccc"
+    ></pre>
+
+    <script>
+      document.getElementById("uploadForm").onsubmit = async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+
+        const response = await fetch("/extract", {
+          method: "POST",
+          body: formData,
+        });
+
+        const result = await response.json();
+        document.getElementById("result").textContent = JSON.stringify(
+          result,
+          null,
+          2
+        );
+      };
+    </script>
+  </body>
+</html>
